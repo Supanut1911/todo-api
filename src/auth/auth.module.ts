@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { User } from './entities/user.entity';
 import { secret } from '../..//constant/jwtkey';
 import { LocalStrategy } from './strategy/local.strategy';
+import { JwtStrategy } from './strategy/jwt.strategy';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -19,6 +20,6 @@ import { LocalStrategy } from './strategy/local.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}
