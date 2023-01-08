@@ -2,8 +2,9 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable } from 'rxjs';
+import { Roles } from 'src/user/entities/roles.entity';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { Users } from '../entities/user.entity';
 import { ROLES_KEY } from '../role.decorator';
 import { ERole } from '../role.enum';
 
@@ -11,8 +12,8 @@ import { ERole } from '../role.enum';
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    @InjectRepository(User)
-    private readonly UserRepo: Repository<User>,
+    @InjectRepository(Users)
+    private readonly UserRepo: Repository<Users>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -24,11 +25,10 @@ export class RolesGuard implements CanActivate {
       return true;
     }
     const { user } = context.switchToHttp().getRequest();
-    const foundUser = await this.UserRepo.findOne({
-      where: {
-        username: user.username,
-      },
-    });
+    const foundUser = await this.UserRepo.createQueryBuilder('user')
+      .where(`user.username = :username`, { username: user.username })
+      .leftJoinAndSelect(`user.roles`, `roles`)
+      .getOne();
 
     return requireRoles.some((role) =>
       foundUser.roles?.some((r) => r.name == role),

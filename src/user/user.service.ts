@@ -1,21 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
+import { Users } from 'src/auth/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
-import { Role } from './entities/roles.entity';
+import { Roles } from './entities/roles.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(Users)
+    private userRepository: Repository<Users>,
 
-    @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    @InjectRepository(Roles)
+    private roleRepository: Repository<Roles>,
   ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
+  async findOne(username: string): Promise<Users | undefined> {
     const user = await this.userRepository.findOne({
       where: { username },
       relations: { roles: true },
@@ -34,12 +34,12 @@ export class UserService {
     return userDto;
   }
 
-  async create(username: string, password: string): Promise<User | undefined> {
-    const user = new User();
+  async create(username: string, password: string): Promise<Users | undefined> {
+    const user = new Users();
     user.username = username;
     user.password = password;
-    const role = new Role();
-    role.id = `1`;
+    const role = new Roles();
+    role.id = `d48e5a5a-0c0d-4418-97bc-7641ebe91a47`;
     user.roles = [role];
     await this.userRepository.save(user);
     return user;

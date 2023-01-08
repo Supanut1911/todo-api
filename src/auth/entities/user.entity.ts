@@ -1,4 +1,4 @@
-import { Role } from 'src/user/entities/roles.entity';
+import { Roles } from 'src/user/entities/roles.entity';
 import {
   Column,
   Entity,
@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 
 @Entity({
-  name: 'user',
+  name: 'users',
 })
-export class User {
+export class Users {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,7 +21,7 @@ export class User {
   @Column()
   password: string;
 
-  @ManyToMany(() => Role)
+  @ManyToMany(() => Roles)
   @JoinTable({
     name: 'users_to_roles',
     joinColumn: {
@@ -33,5 +33,5 @@ export class User {
       referencedColumnName: 'id',
     },
   })
-  roles: Role[];
+  roles: Roles[];
 }

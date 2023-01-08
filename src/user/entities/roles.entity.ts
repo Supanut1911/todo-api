@@ -3,9 +3,9 @@ import { ERole } from 'src/auth/role.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'Role',
+  name: 'roles',
 })
-export class Role {
+export class Roles {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
