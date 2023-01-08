@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { ROLES_KEY } from '../role.decorator';
-import { Role } from '../role.enum';
+import { ERole } from '../role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -16,7 +16,7 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requireRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+    const requireRoles = this.reflector.getAllAndOverride<ERole[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -30,6 +30,8 @@ export class RolesGuard implements CanActivate {
       },
     });
 
-    return requireRoles.some((role) => foundUser.roles?.includes(role));
+    return requireRoles.some((role) =>
+      foundUser.roles?.some((r) => r.name == role),
+    );
   }
 }

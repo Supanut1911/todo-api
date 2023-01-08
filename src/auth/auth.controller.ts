@@ -6,7 +6,7 @@ import { JWTAuthGuard } from './guard/jwt-auth.guard';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { RolesGuard } from './guard/role.guard';
 import { Roles } from './role.decorator';
-import { Role } from './role.enum';
+import { ERole } from './role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   @UseGuards(JWTAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(ERole.Admin)
   @Get('test/user')
   getProtected() {
     return 'protected data';

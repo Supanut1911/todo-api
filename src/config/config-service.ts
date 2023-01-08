@@ -3,6 +3,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { User } from 'src/auth/entities/user.entity';
 import { Todo } from 'src/todo/entities/todo.entity';
+import { Role } from 'src/user/entities/roles.entity';
 dotenv.config();
 
 class ConfigService {
@@ -53,7 +54,7 @@ class ConfigService {
       //   rejectUnauthorized: false,
       // },
 
-      entities: [Todo, User],
+      entities: [Todo, User, Role],
 
       // migrationsTableName: 'migration',
 
@@ -65,7 +66,7 @@ class ConfigService {
 
       // ssl: this.isProduction(),
       // synchronize: Boolean(this.getValue('SYNCHRONIZE')),
-      synchronize: true,
+      synchronize: false,
     };
   }
 }

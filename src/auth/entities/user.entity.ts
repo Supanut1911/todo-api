@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Role } from '../role.enum';
+import { Role } from 'src/user/entities/roles.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'user',
@@ -14,6 +21,17 @@ export class User {
   @Column()
   password: string;
 
-  @Column('enum', { enum: Role, nullable: true })
-  roles: [Role];
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'users_to_roles',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'role_id',
+      referencedColumnName: 'id',
+    },
+  })
+  roles: Role[];
 }
